@@ -1,0 +1,176 @@
+{
+    "name": "The Biomedical Data Translator Publications",
+    "description": "A collection of publications related to the Biomedical Data Translator project, which integrates diverse biomedical datasets through knowledge graphs to accelerate translational research, rare disease treatments, and drug discovery. ",
+    "version": "1.0.0",
+    "publications": [
+    {
+    "title": "The Biomedical Data Translator Program: Conception, Culture, and Community",
+    "authors": ["Biomedical Data Translator Consortium"],
+    "journal": "Clin Transl Sci",
+    "year": 2018,
+    "doi": "10.1111/cts.12592"
+    },
+    {
+    "title": "Progress toward a universal biomedical data translator",
+    "authors": ["Fecho, K.", "Unni, D.", "Meyers, J.", "Nakagiri, S.", "Alterovitz, G.", "Hripcsak, G.", "Fink, J. L.", "He, Y.", "Bradford, R.", "Luo, H.", "Patel, M.", "Maojo, V.", "Brookes, P.", "Bilder, D.", "Hersh, W.", "Sioutos, N.", "Sprague, J.", "Mungall, C.", "Haendel, M.", "Mattingly, C.", "Gray, K.", "Karnovsky, A.", "Maojo, V.", "García-Remesal, M.", "Furlong, L. I.", "Touré, V.", "Lacroix, Z.", "Chichester, C.", "Whetzel, P. L.", "Osumi-Sutherland, D.", "Balhoff, J. P.", "Gaudet, P.", "Bug, B.", "Whetzel, P. L.", "Dahdul, W.", "Mungall, C.", "Haendel, M.", "Matentzoglu, N.", "Gray, K. A.", "Karnovsky, A.", "Brookes, P. S.", "Bilder, D.", "Hersh, W. R.", "Sioutos, N.", "Sprague, J. E.", "Meyers, J. L.", "Nakagiri, S.", "Alterovitz, G.", "Hripcsak, G.", "Fink, J. L.", "He, Yongqun", "Bradford, R.", "Luo, Hong", "Patel, M. H."],
+    "journal": "Clin Transl Sci",
+    "year": 2022,
+    "doi": "10.1111/cts.13301"
+    },
+    {
+    "title": "Announcing the Biomedical Data Translator: Initial Public Release",
+    "authors": ["Fecho, K.", "Unni, D.", "Meyers, J.", "Nakagiri, S.", "Alterovitz, G.", "Hripcsak, G.", "Fink, J. L.", "He, Y.", "Bradford, R.", "Luo, H.", "Patel, M.", "Maojo, V.", "Brookes, P.", "Bilder, D.", "Hersh, W.", "Sioutos, N.", "Sprague, J.", "Mungall, C.", "Haendel, M.", "Mattingly, C.", "Gray, K.", "Karnovsky, A."],
+    "journal": "Clin Transl Sci",
+    "year": 2025,
+    "doi": "10.1111/cts.70284"
+    },
+    {
+    "title": "A novel approach for exposing and sharing clinical data: the Translator Integrated Clinical and Environmental Exposures Service",
+    "authors": ["Fecho, K.", "Coppock, E.", "Unni, D.", "Nakagiri, S.", "Meyers, J.", "Fink, J. L.", "Alterovitz, G.", "Hripcsak, G.", "He, Y.", "Bradford, R.", "Luo, H.", "Patel, M.", "Maojo, V.", "Brookes, P.", "Bilder, D.", "Hersh, W.", "Sioutos, N.", "Sprague, J.", "Mungall, C.", "Haendel, M.", "Mattingly, C.", "Gray, K.", "Karnovsky, A."],
+    "journal": "J Am Med Inform Assoc",
+    "year": 2019,
+    "doi": "10.1093/jamia/ocz128"
+    },
+    {
+    "title": "ROBOKOP: an abstraction layer and user interface for knowledge graphs to support question answering",
+    "authors": ["Morton, K.", "Bredenberg, J.", "Balhoff, J.", "Gray, K.", "Haendel, M.", "Mungall, C.", "Osumi-Sutherland, D.", "Unni, D. R.", "Fecho, K."],
+    "journal": "Bioinformatics",
+    "year": 2019,
+    "doi": "10.1093/bioinformatics/btz373"
+    },
+    {
+    "title": "mediKanren: a System for Biomedical Reasoning",
+    "authors": ["Byrd, W. E.", "Kiefer, M.", "Friedman, H.", "Gomes, C. P.", "Roth, S.", "Storkey, A.", "Waldrop, A. M."],
+    "journal": "",
+    "year": 2020,
+    "doi": ""
+    },
+    {
+    "title": "Explanation Container in Case-Based Biomedical Question-Answering",
+    "authors": ["Goel, Prateek", "Johs, A. J.", "Shrestha, M.", "Weber, R. O."],
+    "journal": "ICCBR Workshops",
+    "year": 2021,
+    "doi": ""
+    },
+    {
+        "title": "Dug: a semantic search engine leveraging peer-reviewed knowledge to query biomedical data repositories",
+        "authors": [
+            "Waldrop, A. M.",
+            "Crerar, A.",
+            "Kebede, Y.",
+            "Unni, D.",
+            "Balhoff, J.",
+            "Haendel, M.",
+            "Mungall, C.",
+            "Osumi-Sutherland, D.",
+            "Fecho, K."
+        ],
+        "journal": "Bioinformatics",
+        "year": 2022,
+        "doi": "10.1093/bioinformatics/btac284"
+    },
+    {
+        "title": "Ubergraph: integrating OBO ontologies into a unified semantic graph",
+        "authors": [
+            "Balhoff, J. P.",
+            "Dahdul, W. M.",
+            "Osumi-Sutherland, D.",
+            "Unni, D. R.",
+            "Haendel, M. A.",
+            "Mungall, C. J."
+        ],
+        "journal": "",
+        "year": 2022,
+        "doi": ""
+    },
+    {
+        "title": "RTX-KG2: a system for building a semantically standardized knowledge graph for translational biomedicine",
+        "authors": [
+            "Wood, E. C.",
+            "Wilson, R. J.",
+            "Weir, W. H.",
+            "Unni, D. R.",
+            "Balhoff, J. P.",
+            "Mungall, C. J.",
+            "Haendel, M. A.",
+            "Osumi-Sutherland, D.",
+            "Fecho, K."
+        ],
+        "journal": "BMC Bioinformatics",
+        "year": 2022,
+        "doi": "10.1186/s12859-022-04921-4"
+    },
+    {
+        "title": "ARAX: a graph-based modular reasoning tool for translational biomedicine",
+        "authors": [
+            "Glen, A. K.",
+            "Wilson, R. J.",
+            "Weir, W. H.",
+            "Unni, D. R.",
+            "Balhoff, J. P.",
+            "Haendel, M. A.",
+            "Mungall, C. J.",
+            "Osumi-Sutherland, D.",
+            "Fecho, K."
+        ],
+        "journal": "Bioinformatics",
+        "year": 2023,
+        "doi": "10.1093/bioinformatics/btad082"
+    },
+    {
+        "title": "Generating Biomedical Knowledge Graphs from Knowledge Bases, Registries, and Multiomic Data",
+        "authors": [
+            "Qin, G.",
+            "Unni, D. R.",
+            "Balhoff, J. P.",
+            "Fecho, K.",
+            "Haendel, M. A.",
+            "Mungall, C. J.",
+            "Osumi-Sutherland, D."
+        ],
+        "journal": "bioRxiv",
+        "year": 2024,
+        "doi": "10.1101/2024.11.14.623648"
+    },
+    {
+        "title": "Biolink Model: A universal schema for knowledge graphs in clinical, biomedical, and translational science",
+        "authors": [
+            "Unni, D. R.",
+            "Balhoff, J. P.",
+            "Dahdul, W. M.",
+            "Fecho, K.",
+            "Haendel, M. A.",
+            "Matentzoglu, N.",
+            "Mungall, C. J.",
+            "Osumi-Sutherland, D.",
+            "Shefchek, K.",
+            "Tao, S.",
+            "Gray, K. A."
+        ],
+        "journal": "Clin Transl Sci",
+        "year": 2022,
+        "doi": "10.1111/cts.13302"
+    },
+    {
+        "title": "An approach for collaborative development of a federated biomedical knowledge graph-based question-answering system: Question-of-the-Month challenges",
+        "authors": [
+            "Fecho, K.",
+            "Unni, D. R.",
+            "Balhoff, J. P.",
+            "Dahdul, W. M.",
+            "Glen, A. K.",
+            "Haendel, M. A.",
+            "Meyers, J. L.",
+            "Mungall, C. J.",
+            "Nakagiri, S.",
+            "Osumi-Sutherland, D.",
+            "Wood, E. C.",
+            "Gray, K. A."
+        ],
+        "journal": "J Clin Transl Sci",
+        "year": 2023,
+        "doi": "10.1017/cts.2023.682"
+    }
+    ]
+}
+
