@@ -1,14 +1,22 @@
 {
   "sheets": {
-    "github_stats": {
+    "github_repo_stats": {
       "sheet_id": "1Exbe4R4RfPpGZ0obm-SpDIw0C34eeEPPQtUZvwgiLQM",
       "tab_name": "community",
+      "measure_names": ["total_forks","total_stars"],
       "date_row": 1,
       "data_row": 2
     },
+    "github_issues_stats": {
+      "sheet_id": "1Exbe4R4RfPpGZ0obm-SpDIw0C34eeEPPQtUZvwgiLQM",
+      "tab_name": "population",
+      "measure_names": ["total_issues", "closed_issues","median_issue_close_time_days"],
+      "date_row": 1,
+      "data_row": 15
+    },
     "publications_stats": {
       "sheet_id": "1Exbe4R4RfPpGZ0obm-SpDIw0C34eeEPPQtUZvwgiLQM",
-      "tab_name": "publications",
+      "tab_name": "population",
       "date_row": 1,
       "data_row": 13
     }
