@@ -78,7 +78,7 @@ def get_client():
     creds = Credentials.from_service_account_file(creds_file, scopes=SCOPES)
     return gspread.authorize(creds)
 
-def get_pending_date_columns(sheet, date_row, data_row):
+def get_pending_date_columns(sheet, date_row, data_row,number_rows_to_update=1):
     """
     Reads date headers and returns list of (date_str, col_idx) where:
     - date <= today
@@ -104,11 +104,12 @@ def get_pending_date_columns(sheet, date_row, data_row):
             continue
         
         if header_date <= today:
-            data_cell = gspread.utils.rowcol_to_a1(data_row, col_idx)
-            data_value = sheet.acell(data_cell).value
+            for rows_idx in range(number_rows_to_update):
+                data_cell = gspread.utils.rowcol_to_a1(data_row+rows_idx, col_idx)
+                data_value = sheet.acell(data_cell).value
             
-            if data_value is None or data_value.strip() == "":
-                pending_columns.append((date_str, col_idx))
+                if data_value is None or data_value.strip() == "":
+                    pending_columns.append((date_str, col_idx))
     
     return pending_columns
 
