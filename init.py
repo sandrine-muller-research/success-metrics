@@ -126,5 +126,5 @@ def write_stats_for_columns(sheet, results, data_row, pending_columns, type_to_w
     
     for i,cell_type in enumerate(type_to_write):
         for date_str, col_idx in pending_columns:
-            cell = gspread.utils.rowcol_to_a1(data_row, col_idx+i)     
+            cell = gspread.utils.rowcol_to_a1(data_row+i, col_idx)     
             sheet.update_acell(cell, results[cell_type])
