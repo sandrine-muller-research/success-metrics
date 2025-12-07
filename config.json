@@ -1,0 +1,33 @@
+{
+  "sheets": {
+    "github_stats": {
+      "sheet_id": "1Exbe4R4RfPpGZ0obm-SpDIw0C34eeEPPQtUZvwgiLQM",
+      "tab_name": "community",
+      "date_row": 1,
+      "data_row": 2
+    },
+    "publications_stats": {
+      "sheet_id": "1Exbe4R4RfPpGZ0obm-SpDIw0C34eeEPPQtUZvwgiLQM",
+      "tab_name": "publications",
+      "date_row": 1,
+      "data_row": 13
+    }
+  },
+  "Translator_end_user_services": {
+    "plover_db": {
+    "url": "https://kg2cploverdb.ci.transltr.io/",
+    "access_method": ""
+    },
+    "BioThings": {
+    "url": "https://biothings.io/",
+    "access_method": ""
+    },
+    "ARS": {
+    "url": "https://ars-prod.transltr.io/",
+    "access_method": ""
+    }
+  },
+  "Publications": {
+    "file_path": "publications.json"
+  } 
+}
