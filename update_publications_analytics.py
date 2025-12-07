@@ -8,61 +8,143 @@ import init
 from semanticscholar import SemanticScholar
 
 # List of DOIs from your Biomedical Data Translator publications
-DOIS = [doi for doi in init.load_publications()['publications'] if 'doi' in doi for doi in [doi['doi']]]
+TRANSLATOR_pubs = init.load_publications()['publications']
+TITLES = [pub['title'] if 'title' in pub else '' for pub in TRANSLATOR_pubs]
+DOIS = [pub['doi'] if 'doi' in pub else '' for pub in TRANSLATOR_pubs]
 ANALYTICS_TYPE = 'publications_stats'
 
+def get_semanticscholar_pub_info(paper):
+    """Semantic Scholar - Basic publication info"""
+    
+    try:
+        pub_dt = getattr(paper, 'publicationDate')  # datetime.datetime(2025, 8, 29, 0, 0)
+        pub_str = pub_dt.strftime('%Y-%m-%d') if pub_dt is not None else None            
+        pub = {
+        'title': paper.title,
+        'doi': getattr(paper, 'externalIds', {}).get('DOI') if hasattr(paper, 'externalIds') else None,
+        'publication_date': pub_str if pub_str is not None else None,
+        'source': 'semanticscholar'
+        }
+        return pub
+    except Exception as e:
+        print(f"Semantic Scholar error: {e}")
+        return None
 
-
-def get_citations_semanticscholar(doi):
+def get_citations_semanticscholar_from_doi(doi):
     """Semantic Scholar - Year as string"""
     sch = SemanticScholar()
     
     try:
         # Find paper by DOI
         paper = sch.get_paper(doi)
-        citations = []
+        pub = get_semanticscholar_pub_info(paper)
         
-        # Get first 10 citations with metadata
-        for citation in paper.citations[:10]:
-            year = getattr(citation, 'year', None)
-            citations.append({
-                'title': citation.title,
-                'doi': getattr(citation, 'doi', None),
-                'publication_date': str(year) if year is not None else None,  # Convert to string
-                'source': 'semanticscholar'
-            })
-        return citations
+        if pub is not None:
+            citations = []
+            
+            # Get first 10 citations with metadata
+            for citation in paper.citations:
+                cit = get_semanticscholar_pub_info(citation)
+                if cit is not None:
+                    citations.append(cit)      
+
+            pub['citations'] = citations
+            return pub
+        else:
+            return []
     except Exception as e:
         print(f"Semantic Scholar error: {e}")
         return []
 
-def get_citations_openalex(doi):
-    """OpenAlex - Complete citation lookup with search fallback"""
-    # First try direct DOI lookup
-    url = f"https://api.openalex.org/works/DOI:{doi}"
+def get_citations_semanticscholar_from_title(title: str):
+    """Semantic Scholar - query by title and return pub info + citations."""
+    sch = SemanticScholar()
+
     try:
-        resp = requests.get(url, timeout=10)
-        print(f"Direct DOI lookup status: {resp.status_code}")
+        # Search paper by title (take best match)
+        results = sch.search_paper(title, limit=1)
+        if not results or len(results) == 0:
+            return []
+
+        paper = results[0]
+        pub = get_semanticscholar_pub_info(paper)
+
+        if pub is not None:
+            citations = []
+
+            for citation in paper.citations:
+                cit = get_semanticscholar_pub_info(citation)
+                if cit is not None:
+                    citations.append(cit)
+
+            pub['citations'] = citations
+            return pub
+        else:
+            return []
+    except Exception as e:
+        print(f"Semantic Scholar error: {e}")
+        return []
+
+def get_citations_openalex_from_doi(doi):
+    """OpenAlex - Complete citation lookup with search fallback"""
+    # First try direct DOI lookup 
+    url = f"https://api.openalex.org/works?filter=doi:{doi}"
+    try:
+        search_resp = requests.get(url, timeout=10)
+
+        print(f"Search status: {search_resp.status_code}")
+        
+        if search_resp.status_code == 200:
+            search_data = search_resp.json()
+            results = search_data.get('results', [])
+            if len(results)>0:
+                pub = {
+                'title': results[0].get('title', '').strip(),
+                'doi': results[0].get('doi'),
+                'publication_date': results[0].get('publication_date'),
+                'source': 'openalex'
+                }
+                pub['citations'] = _extract_citations(results[0])
+                return pub
+            else :
+                print("No results found for DOI search")
+                return []
+        else:
+            print(f"Error: {str(e)}")
+            return []
+                
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return []
+
+def get_citations_openalex_from_title(title: str):
+    """OpenAlex - Complete citation lookup by title search"""
+    # Search by title
+    search_url = f"https://api.openalex.org/works?filter=title.search:'{title}'&per-page=1"
+    try:
+        resp = requests.get(search_url, timeout=10)
+        print(f"Title search status: {resp.status_code}")
         
         if resp.status_code == 200:
             data = resp.json()
-            print(f"Found work with cited_by_count: {data.get('cited_by_count', 0)}")
-            return _extract_citations(data)
-        
-        # Fallback: Search for DOI if direct lookup fails
-        elif resp.status_code == 404:
-            print("Direct DOI not found, trying search...")
-            search_url = f"https://api.openalex.org/works?filter=doi:{doi}&per-page=1"
-            search_resp = requests.get(search_url, timeout=10)
-            print(f"Search status: {search_resp.status_code}")
+            results = data.get('results', [])
+            print(f"Found {len(results)} matching works")
             
-            if search_resp.status_code == 200:
-                search_data = search_resp.json()
-                results = search_data.get('results', [])
-                if results:
-                    print(f"Found work via search with cited_by_count: {results[0].get('cited_by_count', 0)}")
-                    return _extract_citations(results[0])
+            if results:
+                work = results[0]  # Take best match
+                print(f"Found work with cited_by_count: {work.get('cited_by_count', 0)}")
                 
+                pub = {
+                    'title': work.get('title', '').strip(),
+                    'doi': work.get('doi'),
+                    'publication_date': work.get('publication_date'),
+                    'source': 'openalex'
+                }
+                pub['citations'] = _extract_citations(work)
+                return pub
+        
+        print("No results found for title search")
+        
     except Exception as e:
         print(f"Error: {str(e)}")
     
@@ -103,94 +185,101 @@ def _extract_citations(work_data):
     return []
 
 
-def _extract_citations(work_data):
-    """Extract citations from work data using correct filter format"""
-    work_id = work_data.get('id')
-    if not work_id:
-        return []
-    
-    # Use short ID format (W12345) for cites filter
-    work_id_short = work_id.split('/')[-1]
-    citing_url = f"https://api.openalex.org/works?filter=cites:{work_id_short}&per-page=10"
-    
-    try:
-        citing_resp = requests.get(citing_url, timeout=10)
-        print(f"Citing works status: {citing_resp.status_code}")
-        
-        if citing_resp.status_code == 200:
-            citing_data = citing_resp.json()
-            works = citing_data.get('results', [])
-            print(f"Found {len(works)} citing works")
-            
-            citing = []
-            for work in works:
-                citing.append({
-                    'title': work.get('title', '').strip(),
-                    'doi': work.get('doi'),
-                    'publication_date': work.get('publication_date'),
-                    'source': 'openalex'
-                })
-            return citing
-            
-    except Exception as e:
-        print(f"Citing extraction error: {str(e)}")
-    
-    return []
-
-
 
 def get_publications_citations():
     """Enhanced deduplication + OpenAlex date priority"""
     all_citing_by_doi = defaultdict(list)
-    
-    for doi in DOIS:
-        print(f"Processing {doi}...")
-        
-        # Get citations from multiple sources
-        openalex_cits = get_citations_openalex(doi)
-        semanticscholar_cits = get_citations_semanticscholar(doi)
+    if len(DOIS) != len(TITLES):
+        raise ValueError("DOIS and TITLES lists must be of same length.")
+    else: 
+        for i,doi in enumerate(DOIS):
 
-        
-        # Combine ALL citations
-        all_citations = openalex_cits + semanticscholar_cits
-        
-        # Deduplicate with OpenAlex date priority
-        seen_dois = {}  # Track best version of each DOI
-        for cit in all_citations:
-            cit_doi = cit.get('doi')
-            if not cit_doi:
-                continue  # Skip citations without DOI
+            # Get citations from sources
+            if doi != '':
+                print(f"Processing {doi}...")
+                
+                openalex_cits = get_citations_openalex_from_doi(doi)
+                semanticscholar_cits = get_citations_semanticscholar_from_doi(doi)
+
+            elif 'title' in TITLES:
+                print(f"No DOI, processing by title...")
+                openalex_cits = get_citations_openalex_from_title(TITLES[i])
+                semanticscholar_cits = get_citations_semanticscholar_from_title(TITLES[i])
+                
+                
+            # Combine citations from sources    
+            if len(openalex_cits) == 0 and len(semanticscholar_cits) == 0:
+                print(f"No citations found for {doi if doi != '' else TITLES[i]}")
+                continue
             
-            # Prioritize OpenAlex dates, then Semantic Scholar #######TO fix
-            if cit_doi not in seen_dois and cit.get('publication_date'):
-                # Use OpenAlex if available, or update if better date
-                if cit.source == 'openalex' or (seen_dois[cit_doi]['source'] != 'openalex' and cit.get('publication_date')):
-                seen_dois[cit_doi] = {
-                    'title': cit.get('title', ''),
-                    'doi': cit_doi,
-                    'publication_date': cit.get('publication_date'),  # OpenAlex preferred
-                    'source': cit.get('source', 'combined')
-                }
-        
-        # Convert to list and add title-only matches (fallback)
-        unique_citations = list(seen_dois.values())
-        
-        # Add title-only citations (no DOI) if not already present
-        for cit in all_citations:
-            if not cit.get('doi'):  # Title-only
-                title_key = cit.get('title', '')[:50]
-                if title_key and not any(
-                    existing.get('title', '')[:50] == title_key 
-                    for existing in unique_citations
-                ):
-                    unique_citations.append(cit)
-        
-        all_citing_by_doi[doi] = unique_citations
-        
-        print(f"Found {len(unique_citations)} unique citing papers for {doi}")
-        time.sleep(2)
-    
-    output = {doi: list(cits) for doi, cits in all_citing_by_doi.items()}
+            elif len(openalex_cits) == 0 and len(semanticscholar_cits) != 0:
+                if 'citations' in semanticscholar_cits:
+                    all_citations = semanticscholar_cits['citations']
+                    
+            elif len(semanticscholar_cits) == 0 and len(openalex_cits) != 0:
+                if 'citations' in openalex_cits:
+                    all_citations = openalex_cits['citations']
+            elif len(openalex_cits) != 0 and len(semanticscholar_cits) != 0:
+                if 'citations' in openalex_cits and 'citations' in semanticscholar_cits:
+                    all_citations = openalex_cits['citations'] + semanticscholar_cits['citations']
+                elif 'citations' in openalex_cits and 'citations' not in semanticscholar_cits:
+                    all_citations = openalex_cits['citations']
+                elif 'citations' not in openalex_cits and 'citations' in semanticscholar_cits:
+                    all_citations = semanticscholar_cits['citations']
+                            
+            if all_citations is None:
+                all_citations = []
+            
+            if len(all_citations) != 0:
+                # Deduplicate with OpenAlex date priority
+                seen_dois = {}  # Track best version of each DOI
+                for cit in all_citations:
+                    cit_doi = cit.get('doi')
+                    if not cit_doi:
+                        continue  # Skip citations without DOI - will handle later
+                    
+                    # Prioritize OpenAlex dates, then Semantic Scholar
+                    if cit_doi not in seen_dois :
+                        if cit.get('source') == 'openalex':
+                            seen_dois[cit_doi] = {
+                                'title': cit.get('title', ''),
+                                'doi': cit_doi,
+                                'publication_date': cit.get('publication_date'),  # OpenAlex preferred
+                                'source': cit.get('source', 'combined')
+                            }
+                    if cit_doi in seen_dois:
+                        existing = seen_dois[cit_doi]
+                        if (cit.get('source') == 'openalex') and (existing.get('source') == 'semanticscholar') and (cit.get('publication_date') is not None) and (existing.get('source') == 'semanticscholar'):
+                            seen_dois[cit_doi]['publication_date'] = cit.get('publication_date')
+                            seen_dois[cit_doi]['source'] = cit.get('source', existing['source'])
+            
+                # Convert to list and add title-only matches
+                unique_citations = list(seen_dois.values())
+                    
+                # get unique title-only citations
+                unique_title_only_citations = []
+                for cit in all_citations:
+                    if cit.get('doi') is None or cit.get('doi') == '':
+                        title_key = cit.get('title', '')[:50]
+                        if title_key is not None:
+                            if title_key != '':
+                                existing = next((e for e in unique_title_only_citations if e.get('title', '')[:50] == title_key), None)
+                                if existing is None:
+                                    unique_title_only_citations.remove(existing) if existing else None
+                                    unique_title_only_citations.append(cit)
+                                elif cit.get('publication_date') is not None: 
+                                    if cit.get('publication_date') < existing.get('publication_date'):
+                                        unique_title_only_citations.remove(existing) if existing else None
+                                        unique_title_only_citations.append(cit)                                
+
+                [unique_citations.append(cit) for cit in unique_title_only_citations if cit.get('title', '')[:50] not in [u.get('title', '')[:50] for u in unique_citations]]
+                
+                all_citing_by_doi[doi] = unique_citations
+            
+                print(f"Found {len(unique_citations)} unique citing papers for {doi}")
+                
+            output = {doi: list(cits) for doi, cits in all_citing_by_doi.items()}
+
     
     with open('all_citing_papers_by_doi.json', 'w', encoding='utf-8') as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
@@ -210,7 +299,6 @@ def filter_citations_by_date(citations_output, date_str):
     all_citing_dois = set()
     
     for input_doi, citing_list in citations_output.items():
-        has_early_citation = False
         
         for citation in citing_list:
             pub_date_str = citation.get('publication_date')
@@ -224,19 +312,16 @@ def filter_citations_by_date(citations_output, date_str):
                         cit_date = cit_date.replace(month=1, day=1)  # Normalize to year start
                     
                     if cit_date <= cutoff_date:
-                        has_early_citation = True
                         # Collect unique citing DOIs
                         if citation.get('doi'):
                             all_citing_dois.add(citation['doi'])
                         break  # Found one early citation for this input DOI
                 except ValueError:
                     continue  # Skip invalid dates
-        
-        if has_early_citation:
-            original_pubs_with_citations += 1
+
     
     return {
-        'num_original_pubs': original_pubs_with_citations,
+        'num_original_pubs': len(citations_output),
         'num_citing_pubs': len(all_citing_dois)
     }
 
@@ -247,15 +332,11 @@ def main():
     # Connect to Google Sheets:
     # ------------------------------
     client = init.get_client()
-    spreadsheet = client.open_by_key(config['sheets']['github_stats']['sheet_id'])
+    spreadsheet = client.open_by_key(config['sheets']['publications_stats']['sheet_id'])
     community_sheet = spreadsheet.worksheet("population")
     
     # Get dates:
-    pending_dates = init.get_pending_date_columns(community_sheet, config['sheets']['github_stats']['date_row'], config['sheets']['github_stats']['data_row'])
-    if not  pending_dates:
-        print("✅ No pending dates - all columns filled!")
-    else:
-        print(f"📊 Found {len(pending_dates)} pending date columns: {pending_dates}")
+    pending_dates = init.get_pending_date_columns(community_sheet, config['sheets']['publications_stats']['date_row'], config['sheets']['publications_stats']['data_row'])
         
     # ------------------------------
     # Publications analytics:

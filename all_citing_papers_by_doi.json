@@ -1,0 +1,540 @@
+{
+  "10.1111/cts.12592": [
+    {
+      "title": "WikiPathways: connecting communities",
+      "doi": "https://doi.org/10.1093/nar/gkaa1024",
+      "publication_date": "2020-10-19",
+      "source": "openalex"
+    },
+    {
+      "title": "The National COVID Cohort Collaborative (N3C): Rationale, design, infrastructure, and deployment",
+      "doi": "https://doi.org/10.1093/jamia/ocaa196",
+      "publication_date": "2020-08-14",
+      "source": "openalex"
+    },
+    {
+      "title": "Synergistic and Antagonistic Drug Combinations against SARS-CoV-2",
+      "doi": "https://doi.org/10.1016/j.ymthe.2020.12.016",
+      "publication_date": "2020-12-16",
+      "source": "openalex"
+    },
+    {
+      "title": "Fast Healthcare Interoperability Resources (FHIR) as a Meta Model to Integrate Common Data Models: Development of a Tool and Quantitative Validation Study",
+      "doi": "https://doi.org/10.2196/15199",
+      "publication_date": "2019-10-16",
+      "source": "openalex"
+    },
+    {
+      "title": "The case for open science: rare diseases",
+      "doi": "https://doi.org/10.1093/jamiaopen/ooaa030",
+      "publication_date": "2020-09-11",
+      "source": "openalex"
+    },
+    {
+      "title": "ROBOKOP: an abstraction layer and user interface for knowledge graphs to support question answering",
+      "doi": "https://doi.org/10.1093/bioinformatics/btz604",
+      "publication_date": "2019-08-12",
+      "source": "openalex"
+    },
+    {
+      "title": "Progress toward a universal biomedical data translator",
+      "doi": "https://doi.org/10.1111/cts.13301",
+      "publication_date": "2022-05-25",
+      "source": "openalex"
+    },
+    {
+      "title": "Clinical Data: Sources and Types, Regulatory Constraints, Applications",
+      "doi": "https://doi.org/10.1111/cts.12638",
+      "publication_date": "2019-05-09",
+      "source": "openalex"
+    },
+    {
+      "title": "Sex, obesity, diabetes, and exposure to particulate matter among patients with severe asthma: Scientific insights from a comparative analysis of open clinical data sources during a five-day hackathon",
+      "doi": "https://doi.org/10.1016/j.jbi.2019.103325",
+      "publication_date": "2019-11-03",
+      "source": "openalex"
+    },
+    {
+      "title": "Deconstructing the Translational Tower of Babel",
+      "doi": "https://doi.org/10.1111/cts.12595",
+      "publication_date": "2018-11-09",
+      "source": "openalex"
+    },
+    {
+      "title": "Improving Biomedical Knowledge Graph Quality: A Community Approach",
+      "doi": null,
+      "publication_date": "2025-08-29",
+      "source": "semanticscholar"
+    },
+    {
+      "title": "Dug: A Semantic Search Engine Leveraging Peer-Reviewed Knowledge to Span Biomedical Data Repositories",
+      "doi": null,
+      "publication_date": null,
+      "source": "semanticscholar"
+    }
+  ],
+  "10.1111/cts.13301": [
+    {
+      "title": "Biolink Model: A universal schema for knowledge graphs in clinical, biomedical, and translational science",
+      "doi": "https://doi.org/10.1111/cts.13302",
+      "publication_date": "2022-06-06",
+      "source": "openalex"
+    },
+    {
+      "title": "Structured Prompt Interrogation and Recursive Extraction of Semantics (SPIRES): a method for populating knowledge bases using zero-shot learning",
+      "doi": "https://doi.org/10.1093/bioinformatics/btae104",
+      "publication_date": "2024-02-21",
+      "source": "openalex"
+    },
+    {
+      "title": "The Monarch Initiative in 2024: an analytic platform integrating phenotypes, genes and diseases across species",
+      "doi": "https://doi.org/10.1093/nar/gkad1082",
+      "publication_date": "2023-11-24",
+      "source": "openalex"
+    },
+    {
+      "title": "Current and future directions in network biology",
+      "doi": "https://doi.org/10.1093/bioadv/vbae099",
+      "publication_date": "2024-01-01",
+      "source": "openalex"
+    },
+    {
+      "title": "The transition from genomics to phenomics in personalized population health",
+      "doi": "https://doi.org/10.1038/s41576-023-00674-x",
+      "publication_date": "2023-12-13",
+      "source": "openalex"
+    },
+    {
+      "title": "A framework towards digital twins for type 2 diabetes",
+      "doi": "https://doi.org/10.3389/fdgth.2024.1336050",
+      "publication_date": "2024-01-26",
+      "source": "openalex"
+    },
+    {
+      "title": "Transforming dental diagnostics with artificial intelligence: advanced integration of ChatGPT and large language models for patient care",
+      "doi": "https://doi.org/10.3389/fdmed.2024.1456208",
+      "publication_date": "2025-01-06",
+      "source": "openalex"
+    },
+    {
+      "title": "Progress toward a universal biomedical data translator",
+      "doi": "https://doi.org/10.1111/cts.13301",
+      "publication_date": "2022-05-25",
+      "source": "openalex"
+    },
+    {
+      "title": "Nanoinformatics and nanotechnology in anti-inflammatory therapy: A review",
+      "doi": "https://doi.org/10.1016/j.jddst.2024.105446",
+      "publication_date": "2024-02-01",
+      "source": "openalex"
+    },
+    {
+      "title": "Structured prompt interrogation and recursive extraction of semantics (SPIRES): A method for populating knowledge bases using zero-shot learning",
+      "doi": "https://doi.org/10.48550/arxiv.2304.02711",
+      "publication_date": "2023-04-05",
+      "source": "openalex"
+    },
+    {
+      "title": "Systems biology Current and future directions in network biology",
+      "doi": null,
+      "publication_date": null,
+      "source": "semanticscholar"
+    },
+    {
+      "title": "Integration of Adverse Outcome Pathway Information into the Biomedical Data Translator",
+      "doi": null,
+      "publication_date": null,
+      "source": "semanticscholar"
+    }
+  ],
+  "10.1111/cts.70284": [
+    {
+      "title": "MicrobiomeKG: bridging microbiome research and host health through knowledge graphs",
+      "doi": "https://doi.org/10.3389/fsysb.2025.1544432",
+      "publication_date": "2025-08-29",
+      "source": "openalex"
+    },
+    {
+      "title": "Desiderata for a biomedical knowledge network: opportunities, challenges and future Directions",
+      "doi": null,
+      "publication_date": "2025-09-26",
+      "source": "semanticscholar"
+    }
+  ],
+  "10.1093/jamia/ocz128": [
+    {
+      "title": "Machine learning approaches for electronic health records phenotyping: a methodical review",
+      "doi": "https://doi.org/10.1093/jamia/ocac216",
+      "publication_date": "2022-10-27",
+      "source": "openalex"
+    },
+    {
+      "title": "Trends and Features of the Applications of Natural Language Processing Techniques for Clinical Trials Text Analysis",
+      "doi": "https://doi.org/10.3390/app10062157",
+      "publication_date": "2020-03-22",
+      "source": "openalex"
+    },
+    {
+      "title": "Primary care perspectives on implementation of clinical trial recruitment",
+      "doi": "https://doi.org/10.1017/cts.2019.435",
+      "publication_date": "2019-12-26",
+      "source": "openalex"
+    },
+    {
+      "title": "Machine Learning Approaches for Electronic Health Records Phenotyping: A Methodical Review",
+      "doi": "https://doi.org/10.1101/2022.04.23.22274218",
+      "publication_date": "2022-04-27",
+      "source": "openalex"
+    },
+    {
+      "title": "Applying Natural Language Processing to Textual Data From Clinical Data Warehouses: Systematic Review",
+      "doi": "https://doi.org/10.2196/42477",
+      "publication_date": "2023-09-07",
+      "source": "openalex"
+    },
+    {
+      "title": "A Unified Machine Reading Comprehension Framework for Cohort Selection",
+      "doi": "https://doi.org/10.1109/jbhi.2021.3095478",
+      "publication_date": "2021-07-08",
+      "source": "openalex"
+    },
+    {
+      "title": "Cohort selection for clinical trials using multiple instance learning",
+      "doi": "https://doi.org/10.1016/j.jbi.2020.103438",
+      "publication_date": "2020-04-30",
+      "source": "openalex"
+    },
+    {
+      "title": "Towards Efficient Patient Recruitment for Clinical Trials: Application of a Prompt-Based Learning Model",
+      "doi": "https://doi.org/10.2139/ssrn.4630811",
+      "publication_date": "2023-01-01",
+      "source": "openalex"
+    },
+    {
+      "title": "Towards Efficient Patient Recruitment for Clinical Trials: Application of a Prompt-Based Learning Model",
+      "doi": "https://doi.org/10.2139/ssrn.4788664",
+      "publication_date": "2024-01-01",
+      "source": "openalex"
+    },
+    {
+      "title": "Graph-aware pre-trained language model for political sentiment analysis in Filipino social media",
+      "doi": "https://doi.org/10.1016/j.engappai.2025.110317",
+      "publication_date": "2025-02-20",
+      "source": "openalex"
+    }
+  ],
+  "10.1093/bioinformatics/btz373": [
+    {
+      "title": "Differential privacy in health research: A scoping review",
+      "doi": "https://doi.org/10.1093/jamia/ocab135",
+      "publication_date": "2021-06-17",
+      "source": "openalex"
+    },
+    {
+      "title": "Privacy-Preserving Brain–Computer Interfaces: A Systematic Review",
+      "doi": "https://doi.org/10.1109/tcss.2022.3184818",
+      "publication_date": "2022-06-27",
+      "source": "openalex"
+    },
+    {
+      "title": "Differential Private Deep Learning Models for Analyzing Breast Cancer Omics Data",
+      "doi": "https://doi.org/10.3389/fonc.2022.879607",
+      "publication_date": "2022-06-23",
+      "source": "openalex"
+    },
+    {
+      "title": "Differentially private transferrable deep learning with membership-mappings",
+      "doi": "https://doi.org/10.1007/s43674-022-00049-5",
+      "publication_date": "2022-12-15",
+      "source": "openalex"
+    },
+    {
+      "title": "Exploring the Relationship Between Privacy and Utility in Mobile Health: Algorithm Development and Validation via Simulations of Federated Learning, Differential Privacy, and External Attacks",
+      "doi": "https://doi.org/10.2196/43664",
+      "publication_date": "2023-02-19",
+      "source": "openalex"
+    },
+    {
+      "title": "Advancing a consent-forward paradigm for digital mental health data",
+      "doi": "https://doi.org/10.1038/s44220-024-00330-1",
+      "publication_date": "2024-10-25",
+      "source": "openalex"
+    },
+    {
+      "title": "Data Sharing and Privacy in Pharmaceutical Studies",
+      "doi": "https://doi.org/10.2174/1381612827999210112204732",
+      "publication_date": "2021-01-13",
+      "source": "openalex"
+    },
+    {
+      "title": "Exploring the Privacy-Utility Tradeoff in Differentially Private Federated Learning for Mobile Health: A Novel Approach using Simulated Privacy Attacks",
+      "doi": "https://doi.org/10.1101/2022.10.17.22281116",
+      "publication_date": "2022-10-19",
+      "source": "openalex"
+    },
+    {
+      "title": "Differential Privacy for Subgroup Analysis: Opportunities and Challenges for Publishing Rheumatoid Arthritis Data",
+      "doi": "https://doi.org/10.31237/osf.io/gdq2m_v1",
+      "publication_date": "2025-06-24",
+      "source": "openalex"
+    },
+    {
+      "title": "Differential privacy for medical deep learning: methods, tradeoffs, and deployment implications",
+      "doi": null,
+      "publication_date": "2025-05-31",
+      "source": "semanticscholar"
+    },
+    {
+      "title": "Differentially Private Transfer Learning with Conditionally Deep Autoencoders",
+      "doi": null,
+      "publication_date": null,
+      "source": "semanticscholar"
+    }
+  ],
+  "": [
+    {
+      "title": "Deriving insights from enhanced accuracy: Leveraging prompt engineering in custom GPT for assessing Chinese Nursing Licensing Exam",
+      "doi": "https://doi.org/10.1016/j.nepr.2025.104284",
+      "publication_date": "2025-02-04",
+      "source": "openalex"
+    },
+    {
+      "title": "Scientific Semantic Metasearch (SSM)",
+      "doi": "https://doi.org/10.47749/t/unicamp.2022.1259671",
+      "publication_date": "2022-12-07",
+      "source": "openalex"
+    },
+    {
+      "title": "A Cloud-Based Platform for Harmonized COVID-19 Data: Design and Implementation of the Rapid Acceleration of Diagnostics (RADx) Data Hub (Preprint)",
+      "doi": "https://doi.org/10.2196/preprints.72677",
+      "publication_date": "2025-02-14",
+      "source": "openalex"
+    },
+    {
+      "title": "Re-conceptualizing Information Retrieval: A Qualitative Study of Semantic Search, Knowledge Graphs and Linked Data Technologies by Librarians at State Universities in Southwest Nigeria",
+      "doi": "https://doi.org/10.21203/rs.3.rs-8250267/v1",
+      "publication_date": "2025-12-02",
+      "source": "openalex"
+    },
+    {
+      "title": "Integrating Knowledge Graphs and Visualization Dashboards for Advance Data Discovery in VESA",
+      "doi": null,
+      "publication_date": "2024-10-30",
+      "source": "semanticscholar"
+    }
+  ],
+  "10.1093/bioinformatics/btac284": [
+    {
+      "title": "Deriving insights from enhanced accuracy: Leveraging prompt engineering in custom GPT for assessing Chinese Nursing Licensing Exam",
+      "doi": "https://doi.org/10.1016/j.nepr.2025.104284",
+      "publication_date": "2025-02-04",
+      "source": "openalex"
+    },
+    {
+      "title": "Scientific Semantic Metasearch (SSM)",
+      "doi": "https://doi.org/10.47749/t/unicamp.2022.1259671",
+      "publication_date": "2022-12-07",
+      "source": "openalex"
+    },
+    {
+      "title": "A Cloud-Based Platform for Harmonized COVID-19 Data: Design and Implementation of the Rapid Acceleration of Diagnostics (RADx) Data Hub (Preprint)",
+      "doi": "https://doi.org/10.2196/preprints.72677",
+      "publication_date": "2025-02-14",
+      "source": "openalex"
+    },
+    {
+      "title": "Re-conceptualizing Information Retrieval: A Qualitative Study of Semantic Search, Knowledge Graphs and Linked Data Technologies by Librarians at State Universities in Southwest Nigeria",
+      "doi": "https://doi.org/10.21203/rs.3.rs-8250267/v1",
+      "publication_date": "2025-12-02",
+      "source": "openalex"
+    },
+    {
+      "title": "Integrating Knowledge Graphs and Visualization Dashboards for Advance Data Discovery in VESA",
+      "doi": null,
+      "publication_date": "2024-10-30",
+      "source": "semanticscholar"
+    }
+  ],
+  "10.1093/bioinformatics/btad082": [
+    {
+      "title": "RTX-KG2: a system for building a semantically standardized knowledge graph for translational biomedicine",
+      "doi": "https://doi.org/10.1186/s12859-022-04932-3",
+      "publication_date": "2022-09-29",
+      "source": "openalex"
+    },
+    {
+      "title": "Reversal gene expression assessment for drug repurposing, a case study of glioblastoma",
+      "doi": "https://doi.org/10.1186/s12967-024-06046-1",
+      "publication_date": "2025-01-07",
+      "source": "openalex"
+    },
+    {
+      "title": "Exploring NCATS in-house biomedical data for evidence-based drug repurposing",
+      "doi": "https://doi.org/10.1371/journal.pone.0289518",
+      "publication_date": "2024-01-25",
+      "source": "openalex"
+    },
+    {
+      "title": "PloverDB: a high-performance platform for serving biomedical knowledge graphs as standards-compliant web APIs",
+      "doi": "https://doi.org/10.1093/bioinformatics/btaf380",
+      "publication_date": "2025-06-27",
+      "source": "openalex"
+    },
+    {
+      "title": "Reversal Gene Expression Assessment for Drug Repurposing, a Case Study of Glioblastoma",
+      "doi": "https://doi.org/10.21203/rs.3.rs-4765282/v1",
+      "publication_date": "2024-09-09",
+      "source": "openalex"
+    },
+    {
+      "title": "PloverDB: A high-performance platform for serving biomedical knowledge graphs as standards-compliant web APIs",
+      "doi": "https://doi.org/10.1101/2025.03.09.642156",
+      "publication_date": "2025-03-11",
+      "source": "openalex"
+    }
+  ],
+  "10.1101/2024.11.14.623648": [
+    {
+      "title": "PloverDB: a high-performance platform for serving biomedical knowledge graphs as standards-compliant web APIs",
+      "doi": "https://doi.org/10.1093/bioinformatics/btaf380",
+      "publication_date": "2025-06-27",
+      "source": "openalex"
+    },
+    {
+      "title": "PloverDB: A high-performance platform for serving biomedical knowledge graphs as standards-compliant web APIs",
+      "doi": "https://doi.org/10.1101/2025.03.09.642156",
+      "publication_date": "2025-03-11",
+      "source": "openalex"
+    }
+  ],
+  "10.1111/cts.13302": [
+    {
+      "title": "Biolink Model: A universal schema for knowledge graphs in clinical, biomedical, and translational science",
+      "doi": "https://doi.org/10.1111/cts.13302",
+      "publication_date": "2022-06-06",
+      "source": "openalex"
+    },
+    {
+      "title": "Structured Prompt Interrogation and Recursive Extraction of Semantics (SPIRES): a method for populating knowledge bases using zero-shot learning",
+      "doi": "https://doi.org/10.1093/bioinformatics/btae104",
+      "publication_date": "2024-02-21",
+      "source": "openalex"
+    },
+    {
+      "title": "The scalable precision medicine open knowledge engine (SPOKE): a massive knowledge graph of biomedical information",
+      "doi": "https://doi.org/10.1093/bioinformatics/btad080",
+      "publication_date": "2023-02-01",
+      "source": "openalex"
+    },
+    {
+      "title": "The Monarch Initiative in 2024: an analytic platform integrating phenotypes, genes and diseases across species",
+      "doi": "https://doi.org/10.1093/nar/gkad1082",
+      "publication_date": "2023-11-24",
+      "source": "openalex"
+    },
+    {
+      "title": "AI-Based Computer Vision Techniques and Expert Systems",
+      "doi": "https://doi.org/10.3390/ai4010013",
+      "publication_date": "2023-02-23",
+      "source": "openalex"
+    },
+    {
+      "title": "An open source knowledge graph ecosystem for the life sciences",
+      "doi": "https://doi.org/10.1038/s41597-024-03171-w",
+      "publication_date": "2024-04-11",
+      "source": "openalex"
+    },
+    {
+      "title": "The transition from genomics to phenomics in personalized population health",
+      "doi": "https://doi.org/10.1038/s41576-023-00674-x",
+      "publication_date": "2023-12-13",
+      "source": "openalex"
+    },
+    {
+      "title": "KG-Hub—building and exchanging biological knowledge graphs",
+      "doi": "https://doi.org/10.1093/bioinformatics/btad418",
+      "publication_date": "2023-06-30",
+      "source": "openalex"
+    },
+    {
+      "title": "Planteome 2024 Update: Reference Ontologies and Knowledgebase for Plant Biology",
+      "doi": "https://doi.org/10.1093/nar/gkad1028",
+      "publication_date": "2023-12-06",
+      "source": "openalex"
+    },
+    {
+      "title": "Progress toward a universal biomedical data translator",
+      "doi": "https://doi.org/10.1111/cts.13301",
+      "publication_date": "2022-05-25",
+      "source": "openalex"
+    },
+    {
+      "title": "LinkML: An Open Data Modeling Framework",
+      "doi": null,
+      "publication_date": "2025-11-21",
+      "source": "semanticscholar"
+    },
+    {
+      "title": "Desiderata for a biomedical knowledge network: opportunities, challenges and future Directions",
+      "doi": null,
+      "publication_date": "2025-09-26",
+      "source": "semanticscholar"
+    },
+    {
+      "title": "Why we need all the organisms: an exploration of the Monarch knowledge graph to aid mechanism discovery",
+      "doi": null,
+      "publication_date": "2025-09-22",
+      "source": "semanticscholar"
+    },
+    {
+      "title": "Improving Biomedical Knowledge Graph Quality: A Community Approach",
+      "doi": null,
+      "publication_date": "2025-08-29",
+      "source": "semanticscholar"
+    },
+    {
+      "title": "Democratising Knowledge Representation with BioCypher",
+      "doi": null,
+      "publication_date": "2022-12-27",
+      "source": "semanticscholar"
+    },
+    {
+      "title": "The Bioregistry: Unifying the Identification of Biomedical Entities through an Integrative, Open, Community-driven Metaregistry",
+      "doi": null,
+      "publication_date": null,
+      "source": "semanticscholar"
+    },
+    {
+      "title": "Ubergraph: Integrating OBO Ontologies into a Unified Semantic Graph",
+      "doi": null,
+      "publication_date": null,
+      "source": "semanticscholar"
+    },
+    {
+      "title": "An Analysis of the Performance of Representation Learning Methods for Entity Alignment: Benchmark vs. Real-world Data",
+      "doi": null,
+      "publication_date": null,
+      "source": "semanticscholar"
+    },
+    {
+      "title": "Analysis of the Performance of Representation Learning Methods for Entity Alignment: Benchmark vs. Real-world Data",
+      "doi": null,
+      "publication_date": null,
+      "source": "semanticscholar"
+    },
+    {
+      "title": "Integration of Adverse Outcome Pathway Information into the Biomedical Data Translator",
+      "doi": null,
+      "publication_date": null,
+      "source": "semanticscholar"
+    }
+  ],
+  "10.1017/cts.2023.682": [
+    {
+      "title": "Advancing maturity modeling for precision oncology",
+      "doi": "https://doi.org/10.1017/cts.2023.682",
+      "publication_date": "2023-12-07",
+      "source": "openalex"
+    }
+  ]
+}
