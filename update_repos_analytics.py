@@ -5,8 +5,11 @@ import os
 import gspread
 from google.oauth2.service_account import Credentials
 import init
+from statistics import mean, median
+from typing import Dict, Any, List
+import requests
 
-ANALYTICS_TYPE = 'github_stats'
+ANALYTICS_TYPES = ['github_repo_stats','github_issues_stats']
 
 def analyze_org_repos(org_name, token, date_str):
     """
@@ -39,6 +42,76 @@ def analyze_org_repos(org_name, token, date_str):
     return {'total_forks': total_forks, 'total_stars': total_stars}
       
 
+
+def get_all_repo_issues(org_name: str, repo_name: str, token: str) -> List[Dict]:
+    """
+    Collects ALL issues from a GitHub repository (public/private) with full pagination.
+    
+    Args:
+        org_name (str): GitHub organization name
+        repo_name (str): Repository name
+        token (str): GitHub PAT with 'repo' scope
+        
+    Returns:
+        List of all issues as dictionaries
+    """
+    headers = {
+        'Authorization': f'token {token}', 
+        'Accept': 'application/vnd.github.v3+json'
+    }
+    url = f'https://api.github.com/repos/{org_name}/{repo_name}/issues'
+    all_issues = []
+    page = 1
+    
+    while True:
+        params = {'state': 'all', 'per_page': 100, 'page': page}
+        resp = requests.get(url, headers=headers, params=params, timeout=10)
+        
+        if resp.status_code != 200:
+            print(f"API error on page {page}: {resp.status_code}")
+            break
+            
+        issues_page = resp.json()
+        if not issues_page:  # Empty page = end
+            break
+            
+        all_issues.extend(issues_page)
+        print(f"Fetched page {page}: {len(issues_page)} issues (total: {len(all_issues)})")
+        page += 1
+    
+    return all_issues
+
+def analyze_repo_issues(org_name: str, repo_name: str, token: str, date_str: str) -> Dict[str, Any]:
+    """Analyzes repo issues up to given date."""
+    all_issues = get_all_repo_issues(org_name, repo_name, token)
+    
+    cutoff_date = datetime.strptime(date_str, '%Y-%m-%d')
+    filtered_issues = [
+        issue for issue in all_issues 
+        if datetime.strptime(issue['created_at'][:10], '%Y-%m-%d') <= cutoff_date
+    ]
+    
+    total_issues = len(filtered_issues)
+    closed_issues = sum(1 for issue in filtered_issues if issue['state'] == 'closed')
+    
+    close_times = []
+    for issue in filtered_issues:
+        if issue['state'] == 'closed' and issue.get('closed_at'):
+            created = datetime.strptime(issue['created_at'][:10], '%Y-%m-%d')
+            closed = datetime.strptime(issue['closed_at'][:10], '%Y-%m-%d')
+            close_times.append((closed - created).days)
+    
+    avg_time_to_close = mean(close_times) if close_times else 0
+    median_time_to_close = median(close_times) if close_times else 0
+    
+    return {
+        'total_issues': total_issues,
+        'closed_issues': closed_issues,
+        'avg_issue_close_time_days': round(avg_time_to_close, 2),
+        'median_issue_close_time_days':median_time_to_close,
+        'all_issues_fetched': len(all_issues)
+    }
+
 def write_github_stats(client, results, config, input_dates):
     sheet_config = config['sheets']['github_stats']
     spreadsheet = client.open_by_key(sheet_config['sheet_id'])
@@ -65,32 +138,31 @@ def write_github_stats(client, results, config, input_dates):
 
 def main():
     config = init.load_config()
-    TOKEN = os.getenv('GITHUB_PUBLIC_REPO_TOKEN')
-    
-    # ------------------------------
-    # Connect to Google Sheets:
-    # ------------------------------
+    TOKEN = os.getenv('GITHUB_REPO_TOKEN')
+
     client = init.get_client()
-    spreadsheet = client.open_by_key(config['sheets']['github_stats']['sheet_id'])
-    community_sheet = spreadsheet.worksheet("community")
-    
-    # Get dates:
-    pending_dates = init.get_pending_date_columns(community_sheet, config['sheets']['github_stats']['date_row'], config['sheets']['github_stats']['data_row'])
-    if not  pending_dates:
-        print("✅ No pending dates - all columns filled!")
-    else:
-        print(f"📊 Found {len(pending_dates)} pending date columns: {pending_dates}")
-        
+
     # ------------------------------
     # Repos analytics:
     # ------------------------------
-    for date_str, col_idx in pending_dates:
-        git_repos_analytics = analyze_org_repos("NCATSTranslator", TOKEN, date_str)
-        print(f"Total forks: {git_repos_analytics['total_forks']}, Total stars: {git_repos_analytics['total_stars']}")
-        init.write_stats_for_columns(community_sheet, git_repos_analytics, config['sheets'][ANALYTICS_TYPE]['data_row'], [(date_str, col_idx)])
+    for analytic_type in ANALYTICS_TYPES:
+        spreadsheet = client.open_by_key(config['sheets'][analytic_type]['sheet_id'])
+        sheet = spreadsheet.worksheet(config['sheets'][analytic_type]['tab_name'])
+
+        # Get dates:
+        pending_dates = init.get_pending_date_columns(sheet, config['sheets'][analytic_type]['date_row'], config['sheets'][analytic_type]['data_row'])
+        if pending_dates != []:
+            print("Updating GitHub repos analytics:", pending_dates)
+            for date_str, col_idx in pending_dates:
+                if analytic_type == 'github_repo_stats':
+                    analytics = analyze_org_repos("NCATSTranslator", TOKEN, date_str)
+                elif analytic_type == 'github_issues_stats':
+                    analytics = analyze_repo_issues("NCATSTranslator", "Feedback", TOKEN, date_str)
+                
+                init.write_stats_for_columns(sheet, analytics, config['sheets'][analytic_type]['data_row'], [(date_str, col_idx)],config['sheets'][analytic_type].get('measure_names', []))
     
-    
-    print(f"✅ SUCCESS! {ANALYTICS_TYPE} analytics recorded.") 
+
+            print(f"✅ SUCCESS! {analytic_type} analytics recorded.")
 
 if __name__ == "__main__":
     main()
