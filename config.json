@@ -17,8 +17,16 @@
     "publications_stats": {
       "sheet_id": "1Exbe4R4RfPpGZ0obm-SpDIw0C34eeEPPQtUZvwgiLQM",
       "tab_name": "population",
+      "measure_names": ["num_original_pubs","num_citing_pubs"],
       "date_row": 1,
       "data_row": 13
+    },
+    "events_stats": {
+      "sheet_id": "1Exbe4R4RfPpGZ0obm-SpDIw0C34eeEPPQtUZvwgiLQM",
+      "tab_name": "community",
+      "measure_names": [["nb_events","nb_people_engaged"],["DOGSURF","DOGSLED","CATRAX","A&C","UI"]],
+      "date_row": 1,
+      "data_row": 9
     }
   },
   "Translator_end_user_services": {
