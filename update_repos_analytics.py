@@ -41,8 +41,6 @@ def analyze_org_repos(org_name, token, date_str):
     
     return {'total_forks': total_forks, 'total_stars': total_stars}
       
-
-
 def get_all_repo_issues(org_name: str, repo_name: str, token: str) -> List[Dict]:
     """
     Collects ALL issues from a GitHub repository (public/private) with full pagination.
@@ -112,29 +110,6 @@ def analyze_repo_issues(org_name: str, repo_name: str, token: str, date_str: str
         'all_issues_fetched': len(all_issues)
     }
 
-def write_github_stats(client, results, config, input_dates):
-    sheet_config = config['sheets']['github_stats']
-    spreadsheet = client.open_by_key(sheet_config['sheet_id'])
-    sheet = spreadsheet.worksheet(sheet_config['tab_name'])
-    
-    # Find target cell based on input dates
-    target_cell, col_idx = get_target_cell(
-        sheet, 
-        input_dates, 
-        sheet_config['date_row'], 
-        sheet_config['data_row']
-    )
-    
-    # Stars go to next row (data_row + 1)
-    stars_cell = gspread.utils.rowcol_to_a1(sheet_config['data_row'] + 1, col_idx)
-    
-    # Write Forks to data_row
-    sheet.update_acell(target_cell, results['total_forks'])
-    
-    # Write Stars to data_row + 1
-    sheet.update_acell(stars_cell, results['total_stars'])
-    
-    print(f"✅ Wrote Forks to {target_cell}, Stars to {stars_cell} (column {col_idx}) for dates {input_dates}")
 
 def main():
     config = init.load_config()
@@ -159,7 +134,7 @@ def main():
                 elif analytic_type == 'github_issues_stats':
                     analytics = analyze_repo_issues("NCATSTranslator", "Feedback", TOKEN, date_str)
                 
-                init.write_stats_for_columns(sheet, analytics, config['sheets'][analytic_type]['data_row'], [(date_str, col_idx)],config['sheets'][analytic_type].get('measure_names', []))
+                init.write_stats_for_columns(sheet, config['sheets'][analytic_type].get('measure_names', []), [(date_str, col_idx)], analytics, config['sheets'][analytic_type]['data_row'])
     
 
             print(f"✅ SUCCESS! {analytic_type} analytics recorded.")

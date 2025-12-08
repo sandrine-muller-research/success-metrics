@@ -3,6 +3,9 @@ from datetime import datetime
 from pathlib import Path
 import gspread
 from google.oauth2.service_account import Credentials
+from itertools import product
+from typing import List, Tuple
+from gspread.utils import rowcol_to_a1
 
 SCOPES = [
     'https://www.googleapis.com/auth/spreadsheets',
@@ -113,19 +116,24 @@ def get_pending_date_columns(sheet, date_row, data_row,number_rows_to_update=1):
     
     return pending_columns
 
-def write_stats_for_columns(sheet, results, data_row, pending_columns, type_to_write):
-    """
-    Writes forks and stars into specified columns on data_row and data_row+1.
+
+def write_stats_for_columns(sheet, type_to_write: List[List[str]], pending_columns: List[Tuple[str, int]], results: dict, data_row: int = 1):
+    """Writes data row-by-row in flattened format across all combinations."""
+    row_counter = 0  # Sequential row index for flattened layout
     
-    Args:
-        sheet: gspread worksheet
-        results: dict with 'total_forks' and 'total_stars'
-        data_row: int, row number for forks writing
-        pending_columns: list of (date_str, col_idx) to write to
-        type_to_write: str of dictionnary keys to write (e.g. 'total_forks' or 'total_stars')
-    """
-    
-    for i,cell_type in enumerate(type_to_write):
+    # Generate ALL combinations in order
+    for combo in product(*type_to_write):
+        # Get value for this combination
+        value = results
+        for level in combo:
+            if isinstance(value, dict):
+                value = value.get(level, '')
+            else:
+                break
+        
+        # Write to sequential row for each pending column
         for date_str, col_idx in pending_columns:
-            cell = gspread.utils.rowcol_to_a1(data_row+i, col_idx)     
-            sheet.update_acell(cell, results[cell_type])
+            cell = rowcol_to_a1(data_row + row_counter, col_idx)
+            sheet.update_acell(cell, value)
+        
+        row_counter += 1  # Move to next row for next combination

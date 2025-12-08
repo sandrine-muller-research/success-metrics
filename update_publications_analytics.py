@@ -333,10 +333,10 @@ def main():
     # ------------------------------
     client = init.get_client()
     spreadsheet = client.open_by_key(config['sheets']['publications_stats']['sheet_id'])
-    community_sheet = spreadsheet.worksheet("population")
+    sheet = spreadsheet.worksheet(config['sheets']['publications_stats']['tab_name'])
     
     # Get dates:
-    pending_dates = init.get_pending_date_columns(community_sheet, config['sheets']['publications_stats']['date_row'], config['sheets']['publications_stats']['data_row'])
+    pending_dates = init.get_pending_date_columns(sheet, config['sheets']['publications_stats']['date_row'], config['sheets']['publications_stats']['data_row'])
         
     # ------------------------------
     # Publications analytics:
@@ -345,8 +345,8 @@ def main():
     for date_str, col_idx in pending_dates:
         out = filter_citations_by_date(citations, date_str)
         print(f"Total internal publications: {out['num_original_pubs']}, Total citations: {out['num_citing_pubs']}")
-        init.write_stats_for_columns(community_sheet, out, config['sheets'][ANALYTICS_TYPE]['data_row'], [(date_str, col_idx)],['num_original_pubs','num_citing_pubs'])
-    
+        init.write_stats_for_columns(sheet, config['sheets'][ANALYTICS_TYPE].get('measure_names', []), [(date_str, col_idx)], out, config['sheets'][ANALYTICS_TYPE]['data_row'])
+        
     
     print(f"✅ SUCCESS! {ANALYTICS_TYPE} analytics recorded.") 
 
