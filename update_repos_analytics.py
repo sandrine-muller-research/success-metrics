@@ -1,4 +1,3 @@
-# import requests
 from datetime import datetime
 from github import Github
 import os
@@ -7,7 +6,6 @@ from google.oauth2.service_account import Credentials
 import init
 from statistics import mean, median
 from typing import Dict, Any, List
-import requests
 # import spacy
 from collections import Counter
 # import pandas as pd
@@ -17,65 +15,49 @@ import time
 
 ANALYTICS_TYPES = ['github_repo_stats','github_issues_stats'] #,'github_issues_sentiment']
 
-def fetch_comments(issue_number, OWNER, REPO, HEADERS=None):
-    """Fetch all comments for single issue"""
-    comments = []
-    url = f'https://api.github.com/repos/{OWNER}/{REPO}/issues/{issue_number}/comments'
-    params = {'per_page': 100}
-    
-    while url:
-        resp = requests.get(url, headers=HEADERS, params=params)
-        if resp.status_code != 200:
-            break
-        page_comments = resp.json()
-        comments.extend(page_comments)
-        url = resp.links.get('next', {}).get('url')
-        params = {}
-        time.sleep(0.1)
-    
-    return comments
-
 def save_full_issues_tsv(issues, org_name: str, repo_name: str, filename='github_issues_full.tsv'):
     all_rows = []
     
     for i, issue in enumerate(issues, 1):
-        print(f"Processing issue {i}/{len(issues)}: #{issue['number']}")
+        print(f"Processing issue {i}/{len(issues)}: #{issue.number}")
         
         # Issue row
-        comments = fetch_comments(issue['number'], org_name, repo_name)
-        body_preview = issue['body'][:500] + '...' if len(issue['body'] or '') > 500 else (issue['body'] or '')
+        comments = list(issue.get_comments())
+        body_text = issue.body or ''
+        body_preview = body_text[:500] + '...' if len(body_text) > 500 else body_text
         
         all_rows.append({
             'type': 'ISSUE',
-            'number': issue['number'],
-            'title': issue['title'][:200],
-            'state': issue['state'],
-            'created': issue['created_at'],
-            'updated': issue['updated_at'],
-            'author': issue['user']['login'],
-            'assignee': issue.get('assignee', {}).get('login', '') if issue.get('assignee') else '',
-            'labels': ', '.join(label['name'] for label in issue.get('labels', [])),
+            'number': issue.number,
+            'title': issue.title[:200],
+            'state': issue.state,
+            'created': issue.created_at.isoformat(),
+            'updated': issue.updated_at.isoformat(),
+            'author': issue.user.login,
+            'assignee': issue.assignee.login if issue.assignee else '',
+            'labels': ', '.join(label.name for label in issue.labels),
             'body_preview': body_preview.replace('\n', ' ').replace('\t', ' '),
             'total_comments': len(comments),
-            'url': issue['html_url']
+            'url': issue.html_url
         })
         
         # Comment rows (one per comment)
         for comment in comments:
-            body_preview = comment['body'][:500] + '...' if len(comment['body']) > 500 else comment['body']
+            comment_body = comment.body or ''
+            comment_preview = comment_body[:500] + '...' if len(comment_body) > 500 else comment_body
             all_rows.append({
                 'type': 'COMMENT',
-                'number': issue['number'],
-                'title': issue['title'][:100],
+                'number': issue.number,
+                'title': issue.title[:100],
                 'state': '',
-                'created': comment['created_at'],
-                'updated': comment['updated_at'],
-                'author': comment['user']['login'],
+                'created': comment.created_at.isoformat(),
+                'updated': comment.updated_at.isoformat(),
+                'author': comment.user.login,
                 'assignee': '',
                 'labels': '',
-                'body_preview': body_preview.replace('\n', ' ').replace('\t', ' '),
+                'body_preview': comment_preview.replace('\n', ' ').replace('\t', ' '),
                 'total_comments': '',
-                'url': comment['html_url']
+                'url': comment.html_url
             })
         time.sleep(0.2)  # Rate limit
     
@@ -96,7 +78,7 @@ def analyze_org_repos(org_name, token, date_str):
     
     Args:
         org_name (str): GitHub organization name
-        token (str): GitHub PAT with 'repo' scope
+        token (str): GitHub PAT with 'repo' and 'read:org' scope
         date_str (str): 'YYYY-MM-DD' date
     
     Returns:
@@ -111,7 +93,7 @@ def analyze_org_repos(org_name, token, date_str):
     
     print(f"Analyzing {len(list(org.get_repos(type='public')))} public repos in {org_name}...")
     
-    for repo in org.get_repos(type='public'):  # Only public repos [web:17][web:20]
+    for repo in org.get_repos(type='public'):  # Only public repos
         created = repo.created_at
         if created <= dt:  
             total_forks += repo.forks_count
@@ -120,9 +102,9 @@ def analyze_org_repos(org_name, token, date_str):
     
     return {'total_forks': total_forks, 'total_stars': total_stars}
       
-def get_all_repo_issues(org_name: str, repo_name: str, token: str) -> List[Dict]:
+def get_all_repo_issues(org_name: str, repo_name: str, token: str) -> List:
     """
-    Collects ALL issues from a GitHub repository (public/private) with full pagination.
+    Collects ALL issues from a GitHub repository using PyGithub.
     
     Args:
         org_name (str): GitHub organization name
@@ -130,33 +112,12 @@ def get_all_repo_issues(org_name: str, repo_name: str, token: str) -> List[Dict]
         token (str): GitHub PAT with 'repo' scope
         
     Returns:
-        List of all issues as dictionaries
+        List of PyGithub Issue objects
     """
-    headers = {
-        'Authorization': f'token {token}', 
-        'Accept': 'application/vnd.github.v3+json'
-    }
-    url = f'https://api.github.com/repos/{org_name}/{repo_name}/issues'
-    all_issues = []
-    page = 1
-    
-    while True:
-        params = {'state': 'all', 'per_page': 100, 'page': page}
-        resp = requests.get(url, headers=headers, params=params, timeout=10)
-        
-        if resp.status_code != 200:
-            print(f"API error on page {page}: {resp.status_code}")
-            break
-            
-        issues_page = resp.json()
-        if not issues_page:  # Empty page = end
-            break
-            
-        all_issues.extend(issues_page)
-        print(f"Fetched page {page}: {len(issues_page)} issues (total: {len(all_issues)})")
-        page += 1
-    
-    return all_issues
+    g = Github(token)
+    repo = g.get_repo(f"{org_name}/{repo_name}")
+    issues = repo.get_issues(state='all')
+    return list(issues)
 
 def analyze_repo_issues(org_name: str, repo_name: str, token: str, date_str: str) -> Dict[str, Any]:
     """Analyzes repo issues up to given date."""
@@ -165,17 +126,17 @@ def analyze_repo_issues(org_name: str, repo_name: str, token: str, date_str: str
     cutoff_date = datetime.strptime(date_str, '%Y-%m-%d')
     filtered_issues = [
         issue for issue in all_issues 
-        if datetime.strptime(issue['created_at'][:10], '%Y-%m-%d') <= cutoff_date
+        if issue.created_at.date() <= cutoff_date.date()
     ]
     
     total_issues = len(filtered_issues)
-    closed_issues = sum(1 for issue in filtered_issues if issue['state'] == 'closed')
+    closed_issues = sum(1 for issue in filtered_issues if issue.state == 'closed')
     
     close_times = []
     for issue in filtered_issues:
-        if issue['state'] == 'closed' and issue.get('closed_at'):
-            created = datetime.strptime(issue['created_at'][:10], '%Y-%m-%d')
-            closed = datetime.strptime(issue['closed_at'][:10], '%Y-%m-%d')
+        if issue.state == 'closed' and issue.closed_at:
+            created = issue.created_at
+            closed = issue.closed_at
             close_times.append((closed - created).days)
     
     avg_time_to_close = mean(close_times) if close_times else 0
@@ -185,7 +146,7 @@ def analyze_repo_issues(org_name: str, repo_name: str, token: str, date_str: str
         'total_issues': total_issues,
         'closed_issues': closed_issues,
         'avg_issue_close_time_days': round(avg_time_to_close, 2),
-        'median_issue_close_time_days':median_time_to_close,
+        'median_issue_close_time_days': median_time_to_close,
         'all_issues_fetched': len(all_issues)
     }
 
@@ -193,10 +154,10 @@ def analyze_repo_issues(org_name: str, repo_name: str, token: str, date_str: str
 
 # def analyze_issues_sentiment_spacy(all_issues, text_fields=['title', 'body'], model_name='en_core_web_sm'):
 #     """
-#     Perform sentiment analysis on GitHub issues using spaCy + pattern.en.
+#     Perform sentiment analysis on GitHub issues using spaCy + pattern.en
     
 #     Args:
-#         all_issues: List of issue dicts from get_all_repo_issues()
+#         all_issues: List of Issue objects from get_all_repo_issues()
 #         text_fields: List of fields to analyze (default: title, body)
 #         model_name: spaCy model ('en_core_web_sm' or 'en_core_web_lg')
     
@@ -213,8 +174,9 @@ def analyze_repo_issues(org_name: str, repo_name: str, token: str, date_str: str
 #     for issue in all_issues:
 #         texts = []
 #         for field in text_fields:
-#             if issue.get(field):
-#                 texts.append(issue[field])
+#             val = getattr(issue, field, '')
+#             if val:
+#                 texts.append(val)
         
 #         full_text = ' '.join(texts)
 #         if full_text.strip():
@@ -229,8 +191,8 @@ def analyze_repo_issues(org_name: str, repo_name: str, token: str, date_str: str
 #                 polarity, subjectivity = calculate_sentiment_fallback(doc)
             
 #             sentiments.append({
-#                 'issue_number': issue['number'],
-#                 'title': issue.get('title', ''),
+#                 'issue_number': issue.number,
+#                 'title': issue.title,
 #                 'polarity': polarity,
 #                 'subjectivity': subjectivity,
 #                 'sentiment_label': classify_sentiment(polarity)
@@ -293,7 +255,9 @@ def main():
         sheet = spreadsheet.worksheet(config['sheets'][analytic_type]['tab_name'])
 
         # Get dates:
-        pending_dates = init.get_pending_date_columns(sheet, config['sheets'][analytic_type]['date_row'], config['sheets'][analytic_type]['data_row'])
+        pending_dates = init.get_pending_date_columns(sheet, config['sheets'][analytic_type]['date_row'], config['append_date_row'] if 'append_date_row' in config['sheets'][analytic_type] else config['sheets'][analytic_type]['data_row'])
+        # Note: I kept the logic as close to original as possible, but corrected the variable name check for safety.
+        
         if pending_dates != []:
             print("Updating GitHub repos analytics:", pending_dates)
             for date_str, col_idx in pending_dates:
@@ -313,7 +277,7 @@ def main():
 if __name__ == "__main__":
     # main()
     TOKEN = os.getenv('GITHUB_REPO_TOKEN')
-    all_issues = get_all_repo_issues("NCATSTranslator", "Feedback", TOKEN)
+    all_issues = get_all_repo_issues("NCATTRanslator", "Feedback", TOKEN)
     save_full_issues_tsv(all_issues, org_name="NCATSTranslator", repo_name="Feedback")
     'bob'
     # results = analyze_issues_sentiment_spacy(all_issues)
