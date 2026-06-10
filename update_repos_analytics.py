@@ -2,16 +2,16 @@
 from datetime import datetime
 from github import Github
 import os
-import gspread
+# import gspread
 from google.oauth2.service_account import Credentials
 import init
 from statistics import mean, median
 from typing import Dict, Any, List
 import requests
-import spacy
+# import spacy
 from collections import Counter
-import pandas as pd
-import numpy as np
+# import pandas as pd
+# import numpy as np
 import csv
 import time
 
@@ -191,65 +191,65 @@ def analyze_repo_issues(org_name: str, repo_name: str, token: str, date_str: str
 
 
 
-def analyze_issues_sentiment_spacy(all_issues, text_fields=['title', 'body'], model_name='en_core_web_sm'):
-    """
-    Perform sentiment analysis on GitHub issues using spaCy + pattern.en.
+# def analyze_issues_sentiment_spacy(all_issues, text_fields=['title', 'body'], model_name='en_core_web_sm'):
+#     """
+#     Perform sentiment analysis on GitHub issues using spaCy + pattern.en.
     
-    Args:
-        all_issues: List of issue dicts from get_all_repo_issues()
-        text_fields: List of fields to analyze (default: title, body)
-        model_name: spaCy model ('en_core_web_sm' or 'en_core_web_lg')
+#     Args:
+#         all_issues: List of issue dicts from get_all_repo_issues()
+#         text_fields: List of fields to analyze (default: title, body)
+#         model_name: spaCy model ('en_core_web_sm' or 'en_core_web_lg')
     
-    Returns:
-        dict with overall stats and per-issue details
-    """
-    try:
-        nlp = spacy.load(model_name)
-    except OSError:
-        raise ValueError(f"spaCy model '{model_name}' not found. Run: python -m spacy download {model_name}")
+#     Returns:
+#         dict with overall stats and per-issue details
+#     """
+#     try:
+#         nlp = spacy.load(model_name)
+#     except OSError:
+#         raise ValueError(f"spaCy model '{model_name}' not found. Run: python -m spacy download {model_name}")
     
-    sentiments = []
+#     sentiments = []
     
-    for issue in all_issues:
-        texts = []
-        for field in text_fields:
-            if issue.get(field):
-                texts.append(issue[field])
+#     for issue in all_issues:
+#         texts = []
+#         for field in text_fields:
+#             if issue.get(field):
+#                 texts.append(issue[field])
         
-        full_text = ' '.join(texts)
-        if full_text.strip():
-            doc = nlp(full_text)
+#         full_text = ' '.join(texts)
+#         if full_text.strip():
+#             doc = nlp(full_text)
             
-            # Simple rule-based sentiment using pattern.en (bundled with spaCy)
-            polarity = doc._.polarity  # Requires pattern.en or custom rules
-            subjectivity = doc._.subjectivity
+#             # Simple rule-based sentiment using pattern.en (bundled with spaCy)
+#             polarity = doc._.polarity  # Requires pattern.en or custom rules
+#             subjectivity = doc._.subjectivity
             
-            # Fallback: count positive/negative sentiment words
-            if not hasattr(doc, '_'):
-                polarity, subjectivity = calculate_sentiment_fallback(doc)
+#             # Fallback: count positive/negative sentiment words
+#             if not hasattr(doc, '_'):
+#                 polarity, subjectivity = calculate_sentiment_fallback(doc)
             
-            sentiments.append({
-                'issue_number': issue['number'],
-                'title': issue.get('title', ''),
-                'polarity': polarity,
-                'subjectivity': subjectivity,
-                'sentiment_label': classify_sentiment(polarity)
-            })
+#             sentiments.append({
+#                 'issue_number': issue['number'],
+#                 'title': issue.get('title', ''),
+#                 'polarity': polarity,
+#                 'subjectivity': subjectivity,
+#                 'sentiment_label': classify_sentiment(polarity)
+#             })
     
-    # Overall measurements
-    if sentiments:
-        df = pd.DataFrame(sentiments)
-        return {
-            'total_issues_analyzed': len(sentiments),
-            'positive_pct': (df['polarity'] > 0.1).mean() * 100,
-            'negative_pct': (df['polarity'] < -0.1).mean() * 100,
-            'neutral_pct': ((df['polarity'] >= -0.1) & (df['polarity'] <= 0.1)).mean() * 100,
-            'avg_polarity': df['polarity'].mean(),
-            'avg_subjectivity': df['subjectivity'].mean(),
-            'sentiment_distribution': dict(Counter(df['sentiment_label'])),
-            'detailed_results': df
-        }
-    return {'error': 'No text found in issues'}
+#     # Overall measurements
+#     if sentiments:
+#         df = pd.DataFrame(sentiments)
+#         return {
+#             'total_issues_analyzed': len(sentiments),
+#             'positive_pct': (df['polarity'] > 0.1).mean() * 100,
+#             'negative_pct': (df['polarity'] < -0.1).mean() * 100,
+#             'neutral_pct': ((df['polarity'] >= -0.1) & (df['polarity'] <= 0.1)).mean() * 100,
+#             'avg_polarity': df['polarity'].mean(),
+#             'avg_subjectivity': df['subjectivity'].mean(),
+#             'sentiment_distribution': dict(Counter(df['sentiment_label'])),
+#             'detailed_results': df
+#         }
+#     return {'error': 'No text found in issues'}
 
 def calculate_sentiment_fallback(doc):
     """Fallback sentiment scoring using sentiment lexicon."""
