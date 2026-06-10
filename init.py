@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 import gspread
-from google.oauth2.service_account import Credentials
+import google.auth
 from itertools import product
 from typing import List, Tuple
 from gspread.utils import rowcol_to_a1
@@ -31,7 +31,7 @@ def load_config(config_file='config.json'):
             f'      "sheet_id": "your_sheet_id",\n'
             f'      "tab_name": "MY_NAME",\n'
             f'      "date_row": 1,\n'
-            f'      "data_row": 2\n'
+            f'      "data_rev": 2\n'
             f'    }}\n'
             f'  }}\n'
             f'}}'
@@ -74,12 +74,21 @@ def load_publications():
         raise ValueError(f"Invalid JSON in {pub_path}: {e}")
 
 def get_client():
-    creds_file = Path('credentials.json')
-    if not creds_file.exists():
-        raise FileNotFoundError("no credentials.json found.")
-    
-    creds = Credentials.from_service_account_file(creds_file, scopes=SCOPES)
-    return gspread.authorize(creds)
+    """
+    Authenticates using Application Default Credentials (ADC).
+    Works locally via 'gcloud auth application-default login' 
+    and on Google Cloud via Service Account attachment.
+    """
+    try:
+        # This looks for credentials in the environment or via gcloud SDK
+        credentials, project = google.auth.default(scopes=SCOPES)
+        return gspread.authorize(credentials)
+    except Exception as e:
+        raise RuntimeError(
+            f"Failed to authenticate with Google Cloud ADC. "
+            f"Ensure you have run 'gcloud auth application-default login' locally. "
+            f"Error: {e}"
+        )
 
 def get_pending_date_columns(sheet, date_row, data_row,number_rows_to_update=1):
     """
